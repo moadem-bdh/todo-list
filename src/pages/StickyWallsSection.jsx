@@ -1,14 +1,21 @@
-import { Outlet, useLocation, useParams, Link } from "react-router";
+import { Outlet, useLocation, useParams } from "react-router";
 import StickyBigTitele from "../components/StickyBigTitele";
 import StickyWallNotes from "../components/StickyWallsNotes";
 import { useStickyWalls } from "../Contexts/StickyWallContext";
-
 export default function StickyWallSection() {
   const location = useLocation();
   const bgLocation = location.state?.bgLocation;
   const { stickyWalls } = useStickyWalls();
   const { stickyId } = useParams();
   const currentStickyWall = stickyWalls.find((sticky) => sticky.id == stickyId);
+
+  const handleAddNewStickyWall = () => {
+    window.__pendingOpenAddStickyWall = true;
+    window.dispatchEvent(new Event("openSidebar"));
+    setTimeout(() => {
+      window.dispatchEvent(new Event("openAddStickyWall"));
+    }, 50);
+  };
 
   return (
     <main className=" flex min-h-screen w-full px-[30px] py-[26px] flex-col items-end gap-8  bg-[#F6F8FA] ">
@@ -24,12 +31,13 @@ export default function StickyWallSection() {
           <p className="text-lg text-gray-600 mb-6 font-poppins">
             Create your first sticky wall to start organizing your notes.
           </p>
-          <Link
-            to="/"
+          <button
+            type="button"
+            onClick={handleAddNewStickyWall}
             className="px-6 py-3 bg-[#D7303A] text-white font-semibold font-poppins rounded-xl hover:bg-[#b32530] transition-colors"
           >
-            Go Back to Home Page
-          </Link>
+            Add New Sticky Wall
+          </button>
         </div>
       )}
 

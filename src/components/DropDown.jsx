@@ -15,7 +15,7 @@ export default function DropDown({
       { value: "NotUrgent", label: "Not Urgent" },
       { value: "CanWait", label: "Can Wait" },
     ],
-    [FirstLabel]
+    [FirstLabel],
   );
 
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ export default function DropDown({
   }, [value, options]);
 
   return (
-    <div className={`relative ${width} `}>
+    <div className={`relative ${width} z-30`}>
       <button
         type="button"
         className={` ${height} justify-between  w-full ${
@@ -54,7 +54,7 @@ export default function DropDown({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full w-full bg-white border-2 overflow-hidden  border-[#FF8F8F] rounded-md shadow-md z-10">
+        <div className="absolute left-0 top-full w-full bg-white border-2 overflow-hidden border-[#FF8F8F] rounded-md shadow-md z-50">
           {options.map((opt) => (
             <div
               key={opt.value}

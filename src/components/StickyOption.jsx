@@ -7,6 +7,8 @@ import { useStickyWalls } from "../Contexts/StickyWallContext";
 import { useToggle } from "../CustomHooks/useToggle";
 import Arrow from "../assets/arrow.svg";
 import { useForm } from "../CustomHooks/useForm";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export default function EventOption({ Title = "Sticky Name", stickyId }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -14,28 +16,38 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
   const [isRenam, setIsRenam] = useToggle();
   const location = useLocation();
   const navigate = useNavigate();
-  const isFound = location.pathname.includes(String(stickyId));
   const [isError, setIsError] = useState(false);
-  const currentStickyWall = stickyWalls.find((sticky) => sticky.id == stickyId)
-  const [
-    
-    renamedSticky,
-    setRenamedSticky,
-    resetRenamedSticky,
-  ] = useForm({
-    stickyName: currentStickyWall.stickyName,
-    id: currentStickyWall.id,
-    notes: currentStickyWall.notes,
+  const [shakeKey, setShakeKey] = useState(0);
+  const triggerShake = () => setShakeKey((prev) => prev + 1);
+  const currentStickyWall = stickyWalls.find((sticky) => sticky.id == stickyId);
+  const safeStickyWall = currentStickyWall ?? {
+    id: stickyId,
+    stickyName: Title,
+    notes: [],
+  };
+  const [renamedSticky, setRenamedSticky, resetRenamedSticky] = useForm({
+    stickyName: safeStickyWall.stickyName,
+    id: safeStickyWall.id,
+    notes: safeStickyWall.notes,
   });
-  
+  if (!currentStickyWall) {
+    return null;
+  }
+
   const handelDeleteClick = (e, id) => {
     e.preventDefault();
     e.stopPropagation();
     setStickyWalls((prev) => {
       const AfterDeletedSticky = prev.filter((sticky) => sticky.id != id);
-      const isNotUndefined = AfterDeletedSticky[0]?.id
-      isFound && navigate(`/sticky-wall/${isNotUndefined}`);
-      !isNotUndefined && navigate(`/`);
+      const isCurrentWall = location.pathname === `/sticky-wall/${stickyId}`;
+
+      if (isCurrentWall) {
+        if (AfterDeletedSticky.length > 0) {
+          navigate(`/sticky-wall/${AfterDeletedSticky[0].id}`);
+        } else {
+          navigate(`/sticky-wall`);
+        }
+      }
       return AfterDeletedSticky;
     });
   };
@@ -44,7 +56,6 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
     e.preventDefault();
     e.stopPropagation();
     setIsRenam();
-  
   };
 
   const handleRenamClick = () => {
@@ -55,10 +66,11 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
 
     if (!trimSticky.stickyName) {
       setIsError(true);
+      triggerShake();
     } else {
       setIsError(false);
       setStickyWalls((prev) =>
-        prev.map((sticky) => (sticky.id == stickyId ? trimSticky : sticky))
+        prev.map((sticky) => (sticky.id == stickyId ? trimSticky : sticky)),
       );
       resetRenamedSticky();
       setIsRenam();
@@ -69,12 +81,20 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
     <>
       {isRenam ? (
         <>
-          <div className=" pl-2  py-[3px] flex items-center w-full gap-1.5 ">
+          <motion.div
+            key={shakeKey}
+            animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+            transition={{ duration: 0.35 }}
+            className="pl-2 py-[3px] flex items-center w-full gap-1.5"
+          >
             <img className="h-[18px]  " src={StickyIcon} alt="Sticky Icon" />
             <input
               autoFocus
               value={renamedSticky.stickyName}
-              onChange={setRenamedSticky}
+              onChange={(e) => {
+                setRenamedSticky(e);
+                if (isError) setIsError(false);
+              }}
               name="stickyName"
               className=" text-white text-[18px] w-full font-normal font-poppins focus:outline-0 focus:bg-[#100c0c]  "
               placeholder="Enter event name"
@@ -85,18 +105,20 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
             >
               <img className=" rotate-90" src={Arrow} alt="Add Icon" />
             </button>
-          </div>
+          </motion.div>
           {isError && (
             <p className="text-sm pl-6 font-base w-full font-poppins text-[#fe0011cc]">
-              Event name must be filled
+              Fields must not be empty
             </p>
           )}
         </>
       ) : (
         <Link to={`/sticky-wall/${stickyId}`} className="w-full">
-          <div
+          <motion.div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            whileHover={{ x: 2 }}
+            transition={{ type: "spring", stiffness: 300, damping: 24 }}
             className="hover:bg-[#2F090B]  w-full rounded-lg cursor-pointer flex justify-between "
           >
             <div className=" px-2 py-[3px] flex items-center w-full gap-2 ">
@@ -115,14 +137,17 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
                   <img src={Edit} alt="Edite Icon" className="w-4.5" />
                 </button>
                 <button
-                  onClick={(e) => handelDeleteClick(e, stickyId)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handelDeleteClick(e, stickyId);
+                  }}
                   className=" p-0.5 rounded-sm hover:bg-[#5b2f2f] opacity-30 "
                 >
                   <img src={Delete} alt="Delete Icon" className="w-4.5" />
                 </button>
               </div>
             )}
-          </div>
+          </motion.div>
         </Link>
       )}
     </>

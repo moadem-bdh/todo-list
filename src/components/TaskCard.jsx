@@ -8,6 +8,8 @@ import Eye from "../assets/Eye.svg";
 import Pin1 from "../assets/Pin1.svg";
 import ViewTaskNotesModal from "./modals/ViewTaskNotesModal";
 import { useState } from "react";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useEventsAndTasks } from "../Contexts/EventsContex";
 
@@ -96,7 +98,15 @@ export default function TaskCard({
   };
 
   return (
-    <div className=" w-full min-h-max  gap-[10px] rounded-[20px] py-5.5 px-[18px] bg-white flex items-end flex-col shadow-[0_0_6px_3px_rgba(0,0,0,0.08)]">
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      whileHover={{ y: -2 }}
+      className=" w-full min-h-max  gap-[10px] rounded-[20px] py-5.5 px-[18px] bg-white flex items-end flex-col shadow-[0_0_6px_3px_rgba(0,0,0,0.08)]"
+    >
       <div className=" flex w-full justify-between items-start gap-5">
         <div className=" flex gap-3 items-start h-17   ">
           <img src={List3} alt="List Icon" className=" w-6 mt-2  " />
@@ -162,6 +172,6 @@ export default function TaskCard({
         Notes={Notes}
         Priority={Priority}
       />
-    </div>
+    </motion.div>
   );
 }

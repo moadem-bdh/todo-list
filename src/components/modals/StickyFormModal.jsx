@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { useForm } from "../../CustomHooks/useForm";
 import { useStickyWalls } from "../../Contexts/StickyWallContext";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 export default function StickyFormModal() {
   const colors = [
     { bg: "bg-[#98A7FD]", id: 1 },
@@ -18,16 +20,18 @@ export default function StickyFormModal() {
   const navigate = useNavigate();
   const [bgColor, setBgColor] = useState({ bg: "bg-[#98A7FD]", id: 1 });
   const [isError, setIsError] = useState(false);
-  const {stickyId} = useParams()
+  const [shakeKey, setShakeKey] = useState(0);
+  const triggerShake = () => setShakeKey((prev) => prev + 1);
+  const { stickyId } = useParams();
   const handleColorClick = (id) => {
     setBgColor(() => colors.find((color) => color.id == id));
   };
-const {setStickyWalls} = useStickyWalls()
+  const { setStickyWalls } = useStickyWalls();
   const [newNote, setNewNote] = useForm({
     title: "",
     details: "",
     id: "0",
-    bgColor : "bg-[#98A7FD]"
+    bgColor: "bg-[#98A7FD]",
   });
 
   const handleAddNoteClick = () => {
@@ -36,30 +40,38 @@ const {setStickyWalls} = useStickyWalls()
       title: newNote.title.trim(),
       details: newNote.details.trim(),
       id: crypto.randomUUID(),
-      bgColor : bgColor.bg
+      bgColor: bgColor.bg,
     };
     if (!trimNote.title || !trimNote.details) {
       setIsError(true);
-    }else{
+      triggerShake();
+    } else {
+      setStickyWalls((prev) => {
+        return prev.map((note) => {
+          if (note.id != stickyId) {
+            return note;
+          }
 
-setStickyWalls((prev)=>{
- return prev.map((note)=>{
-if(note.id != stickyId ){return note}
-
-return {...note , notes : [...note.notes ,trimNote  ]}
-
-
-})
-
-})
-navigate(-1)
-
+          return { ...note, notes: [...note.notes, trimNote] };
+        });
+      });
+      navigate(-1);
     }
   };
 
   return (
-    <div className=" min-h-max fixed inset-0 z-50 h-full flex items-center justify-center bg-black/40 transition-colors duration-75 ease-in-out ">
-      <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className=" min-h-max fixed inset-0 z-50 h-full flex items-center justify-center bg-black/40 transition-colors duration-75 ease-in-out "
+    >
+      <motion.div
+        initial={{ y: 24, scale: 0.98, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        exit={{ y: 24, scale: 0.98, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 240, damping: 20 }}
         className={`flex flex-col my-8 min-w-120 w-2/5 max-w-95/100  gap-10  ${bgColor.bg}`}
       >
         {/* Colors  */}
@@ -78,12 +90,25 @@ navigate(-1)
         </div>
 
         {/* Content */}
-        <div className="   flex flex-col items-center justify-between w-full h-95 px-10 pb-10">
+        <motion.div
+          key={shakeKey}
+          animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+          transition={{ duration: 0.35 }}
+          className="   flex flex-col items-center justify-between w-full h-95 px-10 pb-10"
+        >
+          {isError && (
+            <p className="text-red-600 font-poppins text-sm font-medium mb-2">
+              Fields must not be empty
+            </p>
+          )}
           <div className=" justify-between flex  w-full items-start ">
             <textarea
               autoFocus
               name="title"
-              onChange={setNewNote}
+              onChange={(e) => {
+                setNewNote(e);
+                if (isError) setIsError(false);
+              }}
               value={newNote.title}
               type="text"
               className="resize-none min-h-max font-poppins text-[40px] font-semibold max-w-2/3 h-[100px] scrollbar-thin focus:outline-0 scrollbar-thumb-[#98A7FD] scrollbar-track-[#98A7FD] "
@@ -99,27 +124,24 @@ navigate(-1)
 
           <textarea
             name="details"
-            onChange={setNewNote}
+            onChange={(e) => {
+              setNewNote(e);
+              if (isError) setIsError(false);
+            }}
             value={newNote.details}
             className=" resize-none min-h-[120px] w-full font-poppins text-[20px] focus:outline-0 scrollbar-thin scrollbar-thumb-[#98A7FD] scrollbar-track-[#98A7FD] "
             placeholder="Write your notes here"
           />
 
-          {/* Error Message */}
-          <div className="h-6 w-full">
-            {isError && (
-              <p className="text-sm text-red-600 font-semibold font-poppins text-center">
-                All fields must be filled
-              </p>
-            )}
-          </div>
-
-          <button onClick={handleAddNoteClick} className="flex cursor-pointer rounded-2xl flex-col w-max p-2 items-center gap-2 font-poppins text-4xl font-semibold mt-2 text-[#000000b8] hover:text-black hover:translate-y-2 transition-all duration-400 ease-in-out   ">
+          <button
+            onClick={handleAddNoteClick}
+            className="flex cursor-pointer rounded-2xl flex-col w-max p-2 items-center gap-2 font-poppins text-4xl font-semibold mt-2 text-[#000000b8] hover:text-black hover:translate-y-2 transition-all duration-400 ease-in-out   "
+          >
             Stick
             <img src={ArrWBlack} alt="Arrow Icon" />
           </button>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }

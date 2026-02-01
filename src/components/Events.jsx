@@ -1,21 +1,42 @@
 import MenuTiteles from "./MenuTiteles";
 import EventOption from "./EventOption";
 import { useEventsAndTasks } from "../Contexts/EventsContex";
-import { useToggle } from "../CustomHooks/useToggle";
 import Task from "../assets/task.svg";
 import Arrow from "../assets/arrow.svg";
 import { useForm } from "../CustomHooks/useForm";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Events() {
   const { eventsAndTasks, setEventsAndTasks } = useEventsAndTasks();
-  const [isAdding, setIsAdding] = useToggle();
+  const [isAdding, setIsAdding] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0);
+  const triggerShake = () => setShakeKey((prev) => prev + 1);
+  const inputRef = useRef(null);
   const [newEvent, setNewEvent, resetNewEvent] = useForm({
     id: 0,
     Name: "",
     Tasks: [],
   });
+
+  useEffect(() => {
+    const handleOpenAddEvent = () => {
+      setIsAdding(true);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    };
+
+    if (window.__pendingOpenAddEvent) {
+      window.__pendingOpenAddEvent = false;
+      handleOpenAddEvent();
+    }
+
+    window.addEventListener("openAddEvent", handleOpenAddEvent);
+    return () => window.removeEventListener("openAddEvent", handleOpenAddEvent);
+  }, [setIsAdding]);
 
   const addEvent = (Event) => {
     setEventsAndTasks((prev) => [...prev, Event]);
@@ -30,10 +51,11 @@ export default function Events() {
 
     if (!trimEvent.Name) {
       setIsError(true);
+      triggerShake();
     } else {
       setIsError(false);
       addEvent(trimEvent);
-      setIsAdding();
+      setIsAdding(false);
       resetNewEvent();
     }
   };
@@ -42,7 +64,7 @@ export default function Events() {
     <div className=" flex w-[300px] px-5 flex-col gap-[6px] items-center justify-start ">
       <MenuTiteles
         onClick={() => {
-          setIsAdding();
+          setIsAdding((prev) => !prev);
           setIsError(false);
           resetNewEvent();
         }}
@@ -50,13 +72,22 @@ export default function Events() {
       <div className=" flex flex-col w-[260px] items-center justify-start gap-1 min-h-[48px] max-h-[182px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-amber-50 pr-2 overflow-auto ">
         {isAdding && (
           <>
-            <div className=" pl-2  py-[3px] flex items-center w-full gap-1.5 ">
+            <motion.div
+              key={shakeKey}
+              animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+              transition={{ duration: 0.35 }}
+              className="pl-2 py-[3px] flex items-center w-full gap-1.5"
+            >
               <img className="h-[18px]  " src={Task} alt="Add Icon" />
               <input
+                ref={inputRef}
                 autoFocus
                 name="Name"
                 value={newEvent.Name}
-                onChange={setNewEvent}
+                onChange={(e) => {
+                  setNewEvent(e);
+                  if (isError) setIsError(false);
+                }}
                 className=" text-white text-[18px] w-full font-normal font-poppins focus:outline-0 focus:bg-[#100c0c]  "
                 placeholder="Enter event name"
               />
@@ -66,19 +97,29 @@ export default function Events() {
               >
                 <img className=" rotate-90" src={Arrow} alt="Add Icon" />
               </button>
-            </div>
+            </motion.div>
             {isError && (
               <p className="text-sm pl-6 font-base w-full font-poppins text-[#fe0011cc]">
-                Event name must be filled
+                Fields must not be empty
               </p>
             )}
           </>
         )}
-        {eventsAndTasks.map((event) => (
-          
-            <EventOption key={event.id} Title={event.Name} eventId={event.id} />
-          
-        ))}
+        <AnimatePresence mode="popLayout">
+          {eventsAndTasks.map((event) => (
+            <motion.div
+              layout
+              key={event.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              className="w-full"
+            >
+              <EventOption Title={event.Name} eventId={event.id} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

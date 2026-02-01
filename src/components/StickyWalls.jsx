@@ -1,21 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useStickyWalls } from "../Contexts/StickyWallContext";
-import { useToggle } from "../CustomHooks/useToggle";
 import MenuTiteles from "./MenuTiteles";
 import StickyOption from "./StickyOption";
 import { useForm } from "../CustomHooks/useForm";
 import Arrow from "../assets/arrow.svg";
 import StickyIcon from "../assets/Sticky.svg";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function StickyWalls() {
   const { stickyWalls, setStickyWalls } = useStickyWalls();
-  const [isAdding, setIsAdding] = useToggle();
+  const [isAdding, setIsAdding] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0);
+  const triggerShake = () => setShakeKey((prev) => prev + 1);
+  const inputRef = useRef(null);
   const [newSticky, setNewSticky, resetNewSticky] = useForm({
     stickyName: "",
     id: "0",
     notes: [],
   });
+
+  useEffect(() => {
+    const handleOpenAddStickyWall = () => {
+      setIsAdding(true);
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
+    };
+
+    if (window.__pendingOpenAddStickyWall) {
+      window.__pendingOpenAddStickyWall = false;
+      handleOpenAddStickyWall();
+    }
+
+    window.addEventListener("openAddStickyWall", handleOpenAddStickyWall);
+    return () =>
+      window.removeEventListener("openAddStickyWall", handleOpenAddStickyWall);
+  }, []);
 
   const handleAddclick = () => {
     const trimForm = {
@@ -25,10 +47,11 @@ export default function StickyWalls() {
     };
     if (!trimForm.stickyName) {
       setIsError(true);
+      triggerShake();
     } else {
       setIsError(false);
       setStickyWalls((prev) => [...prev, trimForm]);
-      setIsAdding();
+      setIsAdding(false);
       resetNewSticky();
     }
   };
@@ -38,7 +61,7 @@ export default function StickyWalls() {
       <MenuTiteles
         titele="sticky walls"
         onClick={() => {
-          setIsAdding();
+          setIsAdding((prev) => !prev);
           setIsError(false);
           resetNewSticky();
         }}
@@ -46,13 +69,22 @@ export default function StickyWalls() {
       <div className=" flex flex-col w-[260px] items-center justify-start gap-1 min-h-[48px] max-h-[182px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-amber-50 pr-2 overflow-auto ">
         {isAdding && (
           <>
-            <div className=" pl-2  py-[3px] flex items-center w-full gap-1.5 ">
+            <motion.div
+              key={shakeKey}
+              animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+              transition={{ duration: 0.35 }}
+              className="pl-2 py-[3px] flex items-center w-full gap-1.5"
+            >
               <img className="h-[18px]  " src={StickyIcon} alt="Sticky Icon" />
               <input
+                ref={inputRef}
                 autoFocus
                 name="stickyName"
                 value={newSticky.stickyName}
-                onChange={setNewSticky}
+                onChange={(e) => {
+                  setNewSticky(e);
+                  if (isError) setIsError(false);
+                }}
                 className=" text-white text-[18px] w-full font-normal font-poppins focus:outline-0 focus:bg-[#100c0c]  "
                 placeholder="Enter sticky name"
               />
@@ -62,22 +94,30 @@ export default function StickyWalls() {
               >
                 <img className=" rotate-90" src={Arrow} alt="Add Icon" />
               </button>
-            </div>
+            </motion.div>
             {isError && (
               <p className="text-sm pl-6 font-base w-full font-poppins text-[#fe0011cc]">
-                Sticky name must be filled
+                Fields must not be empty
               </p>
             )}
           </>
         )}
 
-        {stickyWalls.map((sticky) => (
-          <StickyOption
-            key={sticky.id}
-            Title={sticky.stickyName}
-            stickyId={sticky.id}
-          />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {stickyWalls.map((sticky) => (
+            <motion.div
+              layout
+              key={sticky.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              className="w-full"
+            >
+              <StickyOption Title={sticky.stickyName} stickyId={sticky.id} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );

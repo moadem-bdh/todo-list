@@ -1,24 +1,26 @@
 import { Link } from "react-router";
 import { useEventsAndTasks } from "../Contexts/EventsContex";
 import { useStickyWalls } from "../Contexts/StickyWallContext";
-import TaskIcon from "../assets/task.svg";
-
+import MoademLogo from "../assets/moademLogo.svg";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const { eventsAndTasks } = useEventsAndTasks();
   const { stickyWalls } = useStickyWalls();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex flex-col items-center py-14 justify-center px-8">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="min-h-screen bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex flex-col items-center py-14 justify-center px-8"
+    >
       <div className="text-center max-w-4xl">
         {/* Logo/Title Section */}
         <div className="mb-12">
           <div className="flex items-center justify-center gap-4 mb-4">
-            <img
-              src={TaskIcon}
-              alt="Todo List Icon"
-              className="w-12 filter brightness-0"
-            />
+            <img src={MoademLogo} alt="Moadem Logo" className="w-16 invert" />
             <h1 className="text-6xl font-bold text-black font-poppins">
               Todo List
             </h1>
@@ -43,43 +45,49 @@ export default function HomePage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <Link
-            to={
-              eventsAndTasks.length > 0
-                ? `/events/${eventsAndTasks[0]?.id}`
-                : "/events"
-            }
-            className="bg-white rounded-2xl shadow-lg p-6 border-2 border-[#FF8F8F] hover:bg-[#E5E7EB] transition-colors duration-200 cursor-pointer block"
-          >
-            <h3 className="text-xl font-semibold text-black mb-2 font-poppins">
-              📅 Events
-            </h3>
-            <p className="text-3xl font-bold text-[#D7303A] font-poppins">
-              {eventsAndTasks.length}
-            </p>
-            <p className="text-gray-600 font-poppins">
-              {eventsAndTasks.length === 1 ? "Event Created" : "Events Created"}
-            </p>
-          </Link>
+          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+            <Link
+              to={
+                eventsAndTasks.length > 0
+                  ? `/events/${eventsAndTasks[0]?.id}`
+                  : "/events"
+              }
+              className="bg-white rounded-2xl shadow-lg p-6 border-2 border-[#FF8F8F] hover:bg-[#E5E7EB] transition-colors duration-200 cursor-pointer block"
+            >
+              <h3 className="text-xl font-semibold text-black mb-2 font-poppins">
+                📅 Events
+              </h3>
+              <p className="text-3xl font-bold text-[#D7303A] font-poppins">
+                {eventsAndTasks.length}
+              </p>
+              <p className="text-gray-600 font-poppins">
+                {eventsAndTasks.length === 1
+                  ? "Event Created"
+                  : "Events Created"}
+              </p>
+            </Link>
+          </motion.div>
 
-          <Link
-            to={
-              stickyWalls.length > 0
-                ? `/sticky-wall/${stickyWalls[0]?.id}`
-                : "/sticky-wall"
-            }
-            className="bg-white rounded-2xl shadow-lg p-6 border-2 border-[#FF8F8F] hover:bg-[#E5E7EB] transition-colors duration-200 cursor-pointer block"
-          >
-            <h3 className="text-xl font-semibold text-black mb-2 font-poppins">
-              📌 Sticky Walls
-            </h3>
-            <p className="text-3xl font-bold text-[#D7303A] font-poppins">
-              {stickyWalls.length}
-            </p>
-            <p className="text-gray-600 font-poppins">
-              {stickyWalls.length === 1 ? "Wall Created" : "Walls Created"}
-            </p>
-          </Link>
+          <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+            <Link
+              to={
+                stickyWalls.length > 0
+                  ? `/sticky-wall/${stickyWalls[0]?.id}`
+                  : "/sticky-wall"
+              }
+              className="bg-white rounded-2xl shadow-lg p-6 border-2 border-[#FF8F8F] hover:bg-[#E5E7EB] transition-colors duration-200 cursor-pointer block"
+            >
+              <h3 className="text-xl font-semibold text-black mb-2 font-poppins">
+                📌 Sticky Walls
+              </h3>
+              <p className="text-3xl font-bold text-[#D7303A] font-poppins">
+                {stickyWalls.length}
+              </p>
+              <p className="text-gray-600 font-poppins">
+                {stickyWalls.length === 1 ? "Wall Created" : "Walls Created"}
+              </p>
+            </Link>
+          </motion.div>
         </div>
 
         {/* Divider */}
@@ -91,7 +99,11 @@ export default function HomePage() {
             Features
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200">
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200"
+            >
               <div className="text-3xl mb-3">🎯</div>
               <h4 className="font-semibold text-black mb-2 font-poppins">
                 Task Priorities
@@ -99,9 +111,13 @@ export default function HomePage() {
               <p className="text-gray-600 text-sm font-poppins">
                 Organize tasks by priority: Urgent, Not Urgent, or Can Wait
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200">
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200"
+            >
               <div className="text-3xl mb-3">📋</div>
               <h4 className="font-semibold text-black mb-2 font-poppins">
                 Event Management
@@ -109,9 +125,13 @@ export default function HomePage() {
               <p className="text-gray-600 text-sm font-poppins">
                 Create and manage events with multiple tasks and deadlines
               </p>
-            </div>
+            </motion.div>
 
-            <div className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200">
+            <motion.div
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-lg p-6 shadow-md hover:bg-[#E5E7EB] transition-colors duration-200"
+            >
               <div className="text-3xl mb-3">📝</div>
               <h4 className="font-semibold text-black mb-2 font-poppins">
                 Sticky Notes
@@ -119,10 +139,10 @@ export default function HomePage() {
               <p className="text-gray-600 text-sm font-poppins">
                 Quick notes and reminders on customizable sticky walls
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

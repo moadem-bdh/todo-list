@@ -1,15 +1,7 @@
 import EventBigTitele from "../components/EventBigTitele";
 import TaskCards from "../components/TaskCards";
 import FilterAndAdd from "../components/FilterAndAdd";
-import TaskFormModal from "../components/modals/TaskFormModal";
-import {
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useParams,
-  Link,
-} from "react-router";
+import { Outlet, useLocation, useParams } from "react-router";
 import { useEventsAndTasks } from "../Contexts/EventsContex";
 import { useState, useEffect } from "react";
 
@@ -20,6 +12,14 @@ export default function EventsSection() {
   const currentEvent = eventsAndTasks.find((event) => event?.id == eventId);
   const location = useLocation();
   const bgLocation = location.state?.bgLocation;
+
+  const handleAddNewEvent = () => {
+    window.__pendingOpenAddEvent = true;
+    window.dispatchEvent(new Event("openSidebar"));
+    setTimeout(() => {
+      window.dispatchEvent(new Event("openAddEvent"));
+    }, 50);
+  };
 
   // ===================================
   useEffect(() => {
@@ -43,12 +43,13 @@ export default function EventsSection() {
             <p className="text-lg text-gray-600 mb-6 font-poppins">
               Create your first event to get started with task management.
             </p>
-            <Link
-              to="/"
+            <button
+              type="button"
+              onClick={handleAddNewEvent}
               className="px-6 py-3 bg-[#D7303A] text-white font-semibold font-poppins rounded-xl hover:bg-[#b32530] transition-colors"
             >
-              Go Back to Home Page
-            </Link>
+              Add New Event
+            </button>
           </div>
         )}
 

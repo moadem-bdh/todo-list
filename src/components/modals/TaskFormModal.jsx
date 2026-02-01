@@ -4,6 +4,8 @@ import { useEventsAndTasks } from "../../Contexts/EventsContex";
 import { useForm } from "../../CustomHooks/useForm";
 import DropDown from "../DropDown";
 import { useNavigate, useParams } from "react-router";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export default function TaskFormModal({ isEdit }) {
   const { setEventsAndTasks, eventsAndTasks } = useEventsAndTasks();
@@ -20,8 +22,11 @@ export default function TaskFormModal({ isEdit }) {
     id: isEdit ? currentTask.id : 0,
   });
   const [isError, setIsError] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0);
+  const triggerShake = () => setShakeKey((prev) => prev + 1);
   const onDropDownChange = (value) => {
     basedSetNewTask((prev) => ({ ...prev, priority: value }));
+    if (isError) setIsError(false);
   };
 
   const addTask = (task) => {
@@ -30,7 +35,7 @@ export default function TaskFormModal({ isEdit }) {
       const currentEvent = updateds.find((event) => event.id == eventId);
       const updated = { ...currentEvent, Tasks: [...currentEvent.Tasks, task] };
       const lastEvents = updateds.map((event) =>
-        event.id != eventId ? event : updated
+        event.id != eventId ? event : updated,
       );
       return lastEvents;
     });
@@ -47,7 +52,7 @@ export default function TaskFormModal({ isEdit }) {
       };
 
       return copiedList.map((event) =>
-        event.id == eventId ? copiedevent : event
+        event.id == eventId ? copiedevent : event,
       );
     });
   };
@@ -69,6 +74,7 @@ export default function TaskFormModal({ isEdit }) {
       trimForm.priority === "Priority"
     ) {
       setIsError(true);
+      triggerShake();
     } else {
       setIsError(false);
       isEdit ? editTask(trimForm) : addTask(trimForm);
@@ -77,8 +83,20 @@ export default function TaskFormModal({ isEdit }) {
   };
 
   return (
-    <div className=" fixed inset-0 min-h-max z-50 h-screen flex items-center justify-center bg-black/40">
-      <div className="bg-white my-8 rounded-[20px] w-2/5 min-w-120 max-w-95/100 py-6  shadow-lg max-h-[90vh] flex flex-col">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className=" fixed inset-0 min-h-max z-50 h-screen flex items-center justify-center bg-black/40"
+    >
+      <motion.div
+        initial={{ y: 24, scale: 0.98, opacity: 0 }}
+        animate={{ y: 0, scale: 1, opacity: 1 }}
+        exit={{ y: 24, scale: 0.98, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 240, damping: 20 }}
+        className="bg-white my-8 rounded-[20px] w-2/5 min-w-120 max-w-95/100 py-6  shadow-lg max-h-[90vh] flex flex-col"
+      >
         <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-red-500/30 px-6 scrollbar-track-transparent hover:scrollbar-thumb-red-600/50">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold font-poppins text-[#D7303A]">
@@ -92,14 +110,27 @@ export default function TaskFormModal({ isEdit }) {
             </button>
           </div>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <div className="space-y-4">
+            <motion.div
+              key={shakeKey}
+              animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
+              transition={{ duration: 0.35 }}
+              className="space-y-4"
+            >
+              {isError && (
+                <p className="text-red-600 font-poppins text-sm font-medium">
+                  Fields must not be empty
+                </p>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 font-poppins">
                   Task Name
                 </label>
                 <input
                   autoFocus
-                  onChange={(e) => setNewTask(e)}
+                  onChange={(e) => {
+                    setNewTask(e);
+                    if (isError) setIsError(false);
+                  }}
                   value={newTask.TaskName}
                   type="text"
                   name="TaskName"
@@ -129,19 +160,15 @@ export default function TaskFormModal({ isEdit }) {
                 <textarea
                   value={newTask.Notes}
                   name="Notes"
-                  onChange={(e) => setNewTask(e)}
+                  onChange={(e) => {
+                    setNewTask(e);
+                    if (isError) setIsError(false);
+                  }}
                   className="w-full px-4 scrollbar-thin scrollbar-thumb-[#FF8F8F]  scrollbar-track-transparent py-2 border-2 border-[#FF8F8F] rounded-xl focus:outline-none focus:border-[#D7303A] font-poppins min-h-[100px] resize-none"
                   placeholder="Add your notes here..."
                 />
               </div>
-            </div>
-            <div className=" h-6 pl-4">
-              {isError && (
-                <p className=" text-sm text-red-600 font-semibold font-poppins ">
-                  All fields must be filled
-                </p>
-              )}
-            </div>
+            </motion.div>
 
             <div className="flex justify-end gap-3 mt-6">
               <button
@@ -160,7 +187,7 @@ export default function TaskFormModal({ isEdit }) {
             </div>
           </form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

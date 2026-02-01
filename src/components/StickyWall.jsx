@@ -1,6 +1,8 @@
 import { useParams } from "react-router";
 import Close from "../assets/close.svg";
 import { useStickyWalls } from "../Contexts/StickyWallContext";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 export default function StickyWall({
   NoteName = "Note Name",
@@ -25,7 +27,12 @@ export default function StickyWall({
   };
 
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 18, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 240, damping: 20 }}
       className={` flex w-full min-h-42 px-5 pt-5 pb-12 flex-col items-center gap-[10px] rounded-1 ${bgColor} shadow-[0_0_6px_3px_rgba(0,0,0,0.08)] `}
     >
       <div className=" flex w-full justify-between items-center font-poppins text-2xl font-semibold text-black  ">
@@ -42,6 +49,6 @@ export default function StickyWall({
       <p className=" text-black w-full font-poppins text-xs font-normal  ">
         {NoteContent}
       </p>
-    </div>
+    </motion.div>
   );
 }
