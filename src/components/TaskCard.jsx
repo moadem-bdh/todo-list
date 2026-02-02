@@ -105,12 +105,12 @@ export default function TaskCard({
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
       transition={{ duration: 0.2 }}
       whileHover={{ y: -2 }}
-      className=" w-full min-h-max  gap-[10px] rounded-[20px] py-5.5 px-[18px] bg-white flex items-end flex-col shadow-[0_0_6px_3px_rgba(0,0,0,0.08)]"
+      className="w-full min-h-max gap-3 rounded-[16px] sm:rounded-[20px] py-4 sm:py-5.5 px-4 sm:px-[18px] bg-white flex items-end flex-col shadow-[0_0_6px_3px_rgba(0,0,0,0.08)]"
     >
       <div className=" flex w-full justify-between items-start gap-5">
-        <div className=" flex gap-3 items-start h-17   ">
-          <img src={List3} alt="List Icon" className=" w-6 mt-2  " />
-          <p className="  text-black font-poppins text-[24px] font-semibold line-clamp-2  text-ellipsis ">
+        <div className="flex gap-3 items-start h-17">
+          <img src={List3} alt="List Icon" className="w-5 sm:w-6 mt-2" />
+          <p className="text-black font-poppins text-lg sm:text-xl lg:text-[24px] font-semibold line-clamp-2 text-ellipsis">
             {TaskName}
           </p>
         </div>
@@ -123,21 +123,22 @@ export default function TaskCard({
       </div>
 
       <div className=" w-full flex pt-[5px] flex-col items-start gap-1.5 ">
-        <div className="  flex gap-1 text-[#D7303A] font-poppins text-xs font-medium ">
-          <img src={Pin1} alt="Pin Icon" className="w-[13px]" />
+        <div className="flex gap-1 text-[#D7303A] font-poppins text-[10px] sm:text-xs font-medium">
+          <img src={Pin1} alt="Pin Icon" className="w-[12px] sm:w-[13px]" />
           Notes :
         </div>
 
-        <p className=" text-black font-poppins text-xs font-normal min-h-[2.5rem] px-1.5 w-full line-clamp-3 ">
+        <p className="text-black font-poppins text-[10px] sm:text-xs font-normal min-h-[2.5rem] px-1.5 w-full line-clamp-3">
           {Notes}
         </p>
       </div>
 
       <button
         onClick={handleSeeAllNotesClick}
-        className="pb-[5px] flex gap-[6px] items-center font-poppins text-black font-medium text-xs hover:text-[#D7303A] transition-colors cursor-pointer"
+        className="pb-[5px] flex gap-[6px] items-center font-poppins text-black font-medium text-[10px] sm:text-xs hover:text-[#D7303A] transition-colors cursor-pointer"
       >
-        <img src={Eye} alt="Eye Icon" className="w-[14px]" /> See All Notes
+        <img src={Eye} alt="Eye Icon" className="w-[12px] sm:w-[14px]" /> See
+        All Notes
       </button>
       <div className=" flex justify-between gap-2 w-full items-center  ">
         <div className=" flex items-center gap-[6px] ">

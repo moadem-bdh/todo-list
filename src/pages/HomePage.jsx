@@ -1,6 +1,4 @@
 import { Link } from "react-router";
-import { useEventsAndTasks } from "../Contexts/EventsContex";
-import { useStickyWalls } from "../Contexts/StickyWallContext";
 import OrgaListLogo from "../assets/orgaListRed.svg";
 import Avatar from "../assets/Avatar.png";
 import EventIcon from "../assets/event.svg";
@@ -9,15 +7,20 @@ import StickyHomeIcon from "../assets/stickyHomeRed.svg";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
-  const { eventsAndTasks } = useEventsAndTasks();
-  const { stickyWalls } = useStickyWalls();
+
 
   const handleEventsClick = () => {
-    window.dispatchEvent(new Event("openSidebar"));
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!isMobile) {
+      window.dispatchEvent(new Event("openSidebar"));
+    }
   };
 
   const handleStickyWallsClick = () => {
-    window.dispatchEvent(new Event("openSidebar"));
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!isMobile) {
+      window.dispatchEvent(new Event("openSidebar"));
+    }
   };
 
   return (
@@ -25,25 +28,29 @@ export default function HomePage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
-      className="min-h-screen bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex items-center px-16 relative overflow-hidden"
+      className="min-h-screen bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex flex-col md:flex-row items-center md:items-center justify-start md:justify-center px-4 sm:px-6 md:px-10 lg:px-16 py-10 md:py-0 relative overflow-hidden"
     >
-      {/* Left Content */}
-      <div className="flex-1 z-10">
+      {/* Content */}
+      <div className="z-10 w-full text-center md:text-left md:flex-1 flex flex-col items-center md:items-start gap-6 md:gap-8  md:mb-0 pt-10 md:pt-0">
         {/* Logo */}
-        <div className="flex items-center gap-3 mb-8">
-          <img src={OrgaListLogo} alt="OrgaList Logo" className="w-20 h-20" />
-          <h1 className="text-6xl font-bold text-black font-poppins">
+        <div className="flex items-center gap-3 justify-center md:justify-start">
+          <img
+            src={OrgaListLogo}
+            alt="OrgaList Logo"
+            className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20"
+          />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black font-poppins">
             OrgaList
           </h1>
         </div>
 
         {/* Heading */}
-        <h2 className="text-5xl font-bold text-black mb-8 font-poppins">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-black font-poppins">
           Welcome to your OrgaList
         </h2>
 
         {/* Description */}
-        <p className="text-xl text-gray-600 leading-relaxed font-poppins max-w-2xl mb-10">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed font-poppins max-w-xl md:max-w-2xl mx-auto md:mx-0">
           This is your space to organize your day, plan your goals, and track
           what matters. Every task is a step forward, and every checkmark is a
           small victory. Stay focused, celebrate your wins, and make today
@@ -51,54 +58,72 @@ export default function HomePage() {
         </p>
 
         {/* Action Buttons */}
-        <div className="flex gap-6">
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <div className="flex flex-col sm:flex-row gap-4 items-center md:items-start justify-center md:justify-start w-full md:w-auto">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
+          >
             <Link
-              to={
-                eventsAndTasks.length > 0
-                  ? `/events/${eventsAndTasks[0]?.id}`
-                  : "/events"
-              }
+              to="/events"
               onClick={handleEventsClick}
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#D7303A] text-white rounded-xl font-semibold font-poppins text-lg hover:bg-[#b32530] transition-colors shadow-lg"
+              className="w-full inline-flex items-center justify-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-[#D7303A] text-white rounded-xl font-semibold font-poppins text-base md:text-lg hover:bg-[#b32530] transition-colors shadow-lg"
             >
-              <img src={EventIcon} alt="Events" className="w-8 h-8 invert" />
+              <img
+                src={EventIcon}
+                alt="Events"
+                className="w-6 h-6 md:w-8 md:h-8 invert"
+              />
               Go to Events
             </Link>
           </motion.div>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-full sm:w-auto"
+          >
             <Link
-              to={
-                stickyWalls.length > 0
-                  ? `/sticky-wall/${stickyWalls[0]?.id}`
-                  : "/sticky-wall"
-              }
+              to="/sticky-wall"
               onClick={handleStickyWallsClick}
-              className="inline-flex items-center gap-3 px-[30px] py-[14px] bg-white text-[#D7303A] border-2 border-[#D7303A] rounded-xl font-semibold font-poppins text-lg hover:bg-[#FFF0F0] transition-colors shadow-lg"
+              className="w-full inline-flex items-center justify-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-white text-[#D7303A] border-2 border-[#D7303A] rounded-xl font-semibold font-poppins text-base md:text-lg hover:bg-[#FFF0F0] transition-colors shadow-lg"
             >
               <img
                 src={StickyHomeIcon}
                 alt="Sticky Walls"
-                className="w-8 h-8"
+                className="w-6 h-6 md:w-8 md:h-8"
               />
               Go to Sticky Walls
             </Link>
           </motion.div>
         </div>
+
+        {/* Avatar - Mobile only, at bottom of page */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0, y: 50 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="absolute  bottom-0 md:hidden"
+        >
+          <img
+            src={Avatar}
+            alt="Welcome Avatar"
+            className="h-[380px] sm:h-[460px] w-auto object-contain"
+          />
+        </motion.div>
       </div>
 
-      {/* Right Avatar - Fixed at bottom */}
+      {/* Avatar - Desktop only, fixed at bottom right */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="absolute right-0 bottom-0"
+        className="absolute right-0 bottom-0 hidden md:block"
       >
         <img
           src={Avatar}
           alt="Welcome Avatar"
-          className="h-[660px] transition-all w-auto object-contain"
+          className="h-[460px] lg:h-[560px] xl:h-[660px] transition-all w-auto object-contain"
         />
       </motion.div>
     </motion.div>

@@ -11,9 +11,9 @@ export default function FilterAndAdd({ onChange, value }) {
   const { eventId } = useParams();
 
   return (
-    <div className=" flex w-2/3 justify-between items-center min-w-max gap-4 overflow-visible">
-      <div className=" flex gap-[10px] ">
-        <img src={Filter} alt="Filter Icon " className="w-[20px] " />
+    <div className="flex w-full md:w-2/3 flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 overflow-visible">
+      <div className="flex gap-[10px] items-center w-full sm:w-auto justify-center sm:justify-start">
+        <img src={Filter} alt="Filter Icon " className="w-[18px] sm:w-[20px]" />
 
         <DropDown FirstLabel="All Tasks" value={value} onChange={onChange} />
       </div>
@@ -27,9 +27,9 @@ export default function FilterAndAdd({ onChange, value }) {
             state: { bgLocation: location },
           })
         }
-        className=" flex items-center gap-2.5 min-w-max hover:outline-1 hover:bg-[#FFF0F0] hover:outline-[#FF8F8F]   pt-[5px] pb-[4px] px-2.5 rounded-lg cursor-pointer"
+        className="flex items-center justify-center sm:justify-start gap-2.5 w-full sm:w-auto min-w-max hover:outline-1 hover:bg-[#FFF0F0] hover:outline-[#FF8F8F] pt-[5px] pb-[4px] px-2.5 rounded-lg cursor-pointer"
       >
-        <p className=" font-poppins text-[#d7303acc] text-[20px] min-w-max ">
+        <p className="font-poppins text-[#d7303acc] text-base sm:text-[20px] min-w-max">
           Add Task
         </p>
         <motion.img
@@ -37,7 +37,7 @@ export default function FilterAndAdd({ onChange, value }) {
           transition={{ type: "spring", stiffness: 300, damping: 10 }}
           src={Add}
           alt="Add Icon"
-          className=" w-[30px] opacity-80 "
+          className="w-[24px] sm:w-[30px] opacity-80"
         />
       </motion.button>
     </div>

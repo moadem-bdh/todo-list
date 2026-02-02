@@ -9,6 +9,8 @@ import { Routes, Route, useLocation } from "react-router";
 import { AnimatePresence } from "framer-motion";
 import EventsSection from "./pages/EventsSection";
 import { StickyWallprovider } from "./Contexts/StickyWallContext";
+import MenuIcon from "./assets/menu.svg";
+import CloseIcon from "./assets/close.svg";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -23,7 +25,19 @@ function App() {
   return (
     <EventsProvider>
       <StickyWallprovider>
-        <div className=" w-full  h-max flex ">
+        <div className="w-full h-max flex">
+          <button
+            type="button"
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            className="md:hidden fixed top-4 right-4 z-50 p-2  rounded-lg bg-white shadow-md"
+            aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
+          >
+            <img
+              src={isSidebarOpen ? CloseIcon : MenuIcon}
+              alt={isSidebarOpen ? "Close menu" : "Open menu"}
+              className="w-6 invert h-6"
+            />
+          </button>
           <SideBare
             isOpen={isSidebarOpen}
             onToggle={() => setIsSidebarOpen((prev) => !prev)}
@@ -32,7 +46,7 @@ function App() {
           <div
             className={`w-full transition-[margin] duration-300 ${
               isSidebarOpen ? "ml-[300px]" : "ml-[64px]"
-            }`}
+            } max-md:ml-0`}
           >
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>

@@ -51,7 +51,7 @@ export default function EventsSection() {
   // ===================================
   return (
     <>
-      <main className=" relative flex min-h-screen w-full  px-[30px] py-[26px] flex-col items-end gap-8  bg-[#F6F8FA] ">
+      <main className="relative flex min-h-screen w-full px-4 sm:px-6 md:px-8 lg:px-[30px] py-4 sm:py-6 md:py-[26px] flex-col items-start gap-6 sm:gap-8 bg-[#F6F8FA]">
         <EventBigTitele
           Event={currentEvent?.Name}
           time={currentEvent?.time}
@@ -66,13 +66,13 @@ export default function EventsSection() {
           <div className="flex flex-col w-full text-center">
             {eventsAndTasks.length > 0 ? (
               <>
-                <h2 className="text-3xl font-bold text-black mb-4 font-poppins">
+                <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4 font-poppins">
                   Events
                 </h2>
-                <p className="text-lg text-gray-600 mb-6 font-poppins">
+                <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 font-poppins">
                   Pick one of your events to view its tasks.
                 </p>
-                <ul className="grid w-full grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-8 items-start">
+                <ul className="grid w-full grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-6 sm:gap-y-8 items-start">
                   {eventsAndTasks.map((event) => {
                     return (
                       <li key={event.id} className="relative">
@@ -85,12 +85,12 @@ export default function EventsSection() {
                                   alt="List Icon"
                                   className="w-6 mt-2"
                                 />
-                                <p className="text-black font-poppins text-[24px] font-semibold">
+                                <p className="text-black font-poppins text-lg sm:text-xl lg:text-[24px] font-semibold">
                                   {event.Name}
                                 </p>
                               </div>
                             </div>
-                            <div className="flex gap-3 mt-3 items-center text-black font-poppins text-sm">
+                            <div className="flex gap-3 mt-3 items-center text-black font-poppins text-xs sm:text-sm">
                               <span>
                                 {event.Tasks?.length || 0}{" "}
                                 {event.Tasks?.length === 1 ? "Task" : "Tasks"}
@@ -143,10 +143,10 @@ export default function EventsSection() {
               </>
             ) : (
               <>
-                <h2 className="text-3xl font-bold text-black mb-4 font-poppins">
+                <h2 className="text-2xl sm:text-3xl font-bold text-black mb-3 sm:mb-4 font-poppins">
                   No Events Available
                 </h2>
-                <p className="text-lg text-gray-600 mb-6 font-poppins">
+                <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 font-poppins">
                   Create your first event to get started with task management.
                 </p>
                 <button

@@ -72,7 +72,7 @@ export default function StickyFormModal() {
         animate={{ y: 0, scale: 1, opacity: 1 }}
         exit={{ y: 24, scale: 0.98, opacity: 0 }}
         transition={{ type: "spring", stiffness: 240, damping: 20 }}
-        className={`flex flex-col my-8 min-w-120 w-2/5 max-w-95/100  gap-10  ${bgColor.bg}`}
+        className={`flex flex-col my-8 min-w-0 w-[95%] sm:w-[85%] md:w-2/5 sm:min-w-120 max-w-95/100 gap-10 ${bgColor.bg}`}
       >
         {/* Colors  */}
         <div className=" flex ">
@@ -94,7 +94,7 @@ export default function StickyFormModal() {
           key={shakeKey}
           animate={isError ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
           transition={{ duration: 0.35 }}
-          className="   flex flex-col items-center justify-between w-full h-95 px-10 pb-10"
+          className="   flex flex-col items-center justify-between w-full h-95 px-4 sm:px-10 pb-10"
         >
           {isError && (
             <p className="text-red-600 font-poppins text-sm font-medium mb-2">

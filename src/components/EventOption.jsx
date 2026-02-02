@@ -10,7 +10,11 @@ import Arrow from "../assets/arrow.svg";
 import { useForm } from "../CustomHooks/useForm";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-export default function EventOption({ Title = "Task Name", eventId }) {
+export default function EventOption({
+  Title = "Task Name",
+  eventId,
+  onNavigate = () => {},
+}) {
   const { setEventsAndTasks, eventsAndTasks } = useEventsAndTasks();
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
@@ -118,14 +122,21 @@ export default function EventOption({ Title = "Task Name", eventId }) {
                 if (isError) setIsError(false);
               }}
               name="Name"
-              className=" text-white text-[18px] w-full font-normal font-poppins focus:outline-0 focus:bg-[#100c0c]  "
+              className="bg-black text-white text-[18px] w-full font-normal font-poppins focus:outline-0"
               placeholder="Enter event name"
             />
             <button
               onClick={handleRenamClick}
-              className="hover:bg-[#321b1b] hover:outline-3 hover:outline-[#321b1b]   rounded-sm  cursor-pointer "
+              className="md:hidden p-1.5 rounded-md bg-white/10 hover:scale-105 transition-all duration-200 cursor-pointer flex items-center justify-center"
+              title="Confirm edit"
             >
-              <img className=" rotate-90" src={Arrow} alt="Add Icon" />
+              <img className="rotate-90 w-5 h-5" src={Arrow} alt="Confirm" />
+            </button>
+            <button
+              onClick={handleRenamClick}
+              className="hidden md:flex hover:bg-[#321b1b] hover:outline-3 hover:outline-[#321b1b] rounded-sm cursor-pointer"
+            >
+              <img className="rotate-90" src={Arrow} alt="Add Icon" />
             </button>
           </motion.div>
           {isError && (
@@ -135,26 +146,52 @@ export default function EventOption({ Title = "Task Name", eventId }) {
           )}
         </>
       ) : (
-        <Link to={`/events/${eventId}`} className="w-full ">
+        <Link
+          to={`/events/${eventId}`}
+          className="w-full"
+          onClick={() => {
+            // Only call onNavigate on mobile to close sidebar
+            const isMobile = window.matchMedia("(max-width: 768px)").matches;
+            if (isMobile) onNavigate();
+          }}
+        >
           <motion.div
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             whileHover={{ x: 2 }}
             transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            className="hover:bg-[#2F090B]  w-full rounded-lg cursor-pointer flex justify-between "
+            className="md:hover:bg-[#2F090B] w-full rounded-lg cursor-pointer flex justify-between py-1.5 md:py-0"
           >
-            <div className=" px-2 py-[3px] flex items-center w-full gap-2 ">
-              <img src={TaskIcon} alt="Task" className=" h-[15px]  " />
-              <p className=" text-white text-[18px] w-42 whitespace-nowrap text-ellipsis font-normal font-poppins overflow-hidden ">
+            <div className="px-2 py-[3px] flex items-center w-full gap-2">
+              <img src={TaskIcon} alt="Task" className="h-4 md:h-[15px]" />
+              <p className="text-white text-lg md:text-[18px] w-42 whitespace-nowrap text-ellipsis font-normal font-poppins overflow-hidden">
                 {Title}
               </p>
             </div>
 
+            <div className="flex items-center gap-2 pr-2 md:hidden">
+              <button
+                onClick={handleEditClick}
+                className="p-2 rounded-md bg-white/10"
+              >
+                <img src={Edit} alt="Edite Icon" className="w-5" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteClick(e);
+                }}
+                className="p-2 rounded-md bg-white/10"
+              >
+                <img src={Delete} alt="Delete Icon" className="w-5" />
+              </button>
+            </div>
+
             {isHovered && (
-              <div className=" flex items-center gap-0.5 pr-1 ">
+              <div className="hidden md:flex items-center gap-1 pr-1">
                 <button
                   onClick={handleEditClick}
-                  className=" p-0.5 rounded-sm hover:bg-[#5b2f2f] opacity-30 "
+                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30"
                 >
                   <img src={Edit} alt="Edite Icon" className="w-4.5" />
                 </button>
@@ -163,7 +200,7 @@ export default function EventOption({ Title = "Task Name", eventId }) {
                     e.stopPropagation();
                     handleDeleteClick(e);
                   }}
-                  className=" p-0.5 rounded-sm hover:bg-[#5b2f2f] opacity-30 "
+                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30"
                 >
                   <img src={Delete} alt="Delete Icon" className="w-4.5" />
                 </button>

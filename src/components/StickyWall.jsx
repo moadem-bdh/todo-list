@@ -42,20 +42,20 @@ export default function StickyWall({
         boxShadow: "8px 8px 20px rgba(0,0,0,0.25)",
       }}
       transition={{ duration: 0.2, layout: { duration: 0.3 } }}
-      className={`flex w-full min-h-42 px-5 pt-5 pb-12 flex-col items-center gap-[10px] rounded-1 ${bgColor} shadow-[4px_4px_12px_rgba(0,0,0,0.15)]`}
+      className={`flex w-full min-h-32 sm:min-h-42 px-4 sm:px-5 pt-4 sm:pt-5 pb-8 sm:pb-12 flex-col items-center gap-[10px] rounded-1 ${bgColor} shadow-[4px_4px_12px_rgba(0,0,0,0.15)]`}
     >
-      <div className=" flex w-full justify-between items-center font-poppins text-2xl font-semibold text-black  ">
+      <div className="flex w-full justify-between items-center font-poppins text-lg sm:text-2xl font-semibold text-black">
         {NoteName}
 
         <button
           onClick={() => handleDeleteClick(id)}
-          className="cursor-pointer rounded-2xl hover:bg-[#61616126] "
+          className="cursor-pointer rounded-2xl hover:bg-[#61616126]"
         >
-          <img src={Close} alt="Close Icon" className=" w-8 " />
+          <img src={Close} alt="Close Icon" className="w-6 sm:w-8" />
         </button>
       </div>
 
-      <p className=" text-black w-full font-poppins text-xs font-normal  ">
+      <p className="text-black w-full font-poppins text-[10px] sm:text-xs font-normal">
         {NoteContent}
       </p>
     </motion.div>

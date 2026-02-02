@@ -95,9 +95,9 @@ export default function TaskFormModal({ isEdit }) {
         animate={{ y: 0, scale: 1, opacity: 1 }}
         exit={{ y: 24, scale: 0.98, opacity: 0 }}
         transition={{ type: "spring", stiffness: 240, damping: 20 }}
-        className="bg-white my-8 rounded-[20px] w-2/5 min-w-120 max-w-95/100 py-6  shadow-lg max-h-[90vh] flex flex-col"
+        className="bg-white my-8 rounded-[20px] w-[95%] sm:w-[85%] md:w-2/5 min-w-0 sm:min-w-120 max-w-95/100 py-4 sm:py-6 shadow-lg max-h-[90vh] flex flex-col"
       >
-        <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-red-500/30 px-6 scrollbar-track-transparent hover:scrollbar-thumb-red-600/50">
+        <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-red-500/30 px-4 sm:px-6 scrollbar-track-transparent hover:scrollbar-thumb-red-600/50">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold font-poppins text-[#D7303A]">
               {title}
