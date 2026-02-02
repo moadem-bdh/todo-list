@@ -14,14 +14,15 @@ export default function StickyWallNotes() {
     <section className=" w-full  grid grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-8 items-start ">
       {currentNotes?.notes && currentNotes.notes.length > 0 ? (
         <>
-          <AnimatePresence mode="popLayout">
-            {currentNotes.notes.map((note) => (
+          <AnimatePresence initial={false}>
+            {currentNotes.notes.map((note, index) => (
               <StickyWall
                 key={note.id}
                 NoteName={note.title}
                 NoteContent={note.details}
                 id={note.id}
                 bgColor={note.bgColor}
+                rotation={index}
               />
             ))}
           </AnimatePresence>

@@ -99,11 +99,11 @@ export default function TaskCard({
 
   return (
     <motion.div
-      layout
+      layout="position"
       initial={{ opacity: 0, y: 18, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 10, scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      transition={{ duration: 0.2 }}
       whileHover={{ y: -2 }}
       className=" w-full min-h-max  gap-[10px] rounded-[20px] py-5.5 px-[18px] bg-white flex items-end flex-col shadow-[0_0_6px_3px_rgba(0,0,0,0.08)]"
     >
@@ -128,7 +128,7 @@ export default function TaskCard({
           Notes :
         </div>
 
-        <p className=" text-black font-poppins text-xs font-normal h-7 px-1.5 w-full overflow-hidden text-ellipsis line-clamp-2 ">
+        <p className=" text-black font-poppins text-xs font-normal min-h-[2.5rem] px-1.5 w-full line-clamp-3 ">
           {Notes}
         </p>
       </div>

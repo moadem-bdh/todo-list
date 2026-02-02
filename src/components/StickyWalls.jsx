@@ -19,6 +19,8 @@ export default function StickyWalls() {
     stickyName: "",
     id: "0",
     notes: [],
+    time: "",
+    location: "",
   });
 
   useEffect(() => {
@@ -40,10 +42,23 @@ export default function StickyWalls() {
   }, []);
 
   const handleAddclick = () => {
+    const systemTime = new Date().toLocaleString();
+    const { locale, timeZone } = Intl.DateTimeFormat().resolvedOptions();
+    const regionCode = new Intl.Locale(locale).region;
+    const countryName = regionCode
+      ? new Intl.DisplayNames([locale], { type: "region" }).of(regionCode)
+      : "";
+    const timeZoneRegion =
+      timeZone?.split("/").pop()?.replaceAll("_", " ") ?? "";
+    const systemLocation = [countryName, timeZoneRegion]
+      .filter(Boolean)
+      .join(", ");
     const trimForm = {
       ...newSticky,
       stickyName: newSticky.stickyName.trim(),
       id: crypto.randomUUID(),
+      time: newSticky.time || systemTime,
+      location: newSticky.location || systemLocation,
     };
     if (!trimForm.stickyName) {
       setIsError(true);
@@ -66,7 +81,7 @@ export default function StickyWalls() {
           resetNewSticky();
         }}
       />
-      <div className=" flex flex-col w-[260px] items-center justify-start gap-1 min-h-[48px] max-h-[182px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-amber-50 pr-2 overflow-auto ">
+      <div className=" flex flex-col w-[260px] items-center justify-start gap-1 h-[182px] scrollbar-thin scrollbar-track-transparent scrollbar-thumb-amber-50 pr-2 overflow-auto [scrollbar-gutter:stable] ">
         {isAdding && (
           <>
             <motion.div

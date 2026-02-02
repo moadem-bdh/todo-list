@@ -9,6 +9,7 @@ export default function AddstickyNote() {
   const { stickyId } = useParams();
   return (
     <motion.button
+      layout="position"
       onClick={() =>
         navigate(`/sticky-wall/${stickyId}/note/new`, {
           state: { bgLocation: location },

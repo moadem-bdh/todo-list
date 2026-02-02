@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Arrow from "../assets/arrow.svg";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function DropDown({
   onChange,
@@ -40,7 +42,7 @@ export default function DropDown({
     <div className={`relative ${width} z-30`}>
       <button
         type="button"
-        className={` ${height} justify-between  w-full ${
+        className={` ${height} justify-between cursor-pointer  w-full ${
           open ? "focus:border-[#FF8F8F]" : "focus:border-[#D7303A]"
         }    border-2 border-[#FF8F8F] rounded-md py-1 px-3 text-m font-medium bg-white flex min-w-max items-center focus:outline-none hover:bg-[#FFF0F0] transition-colors duration-150`}
         onClick={() => setOpen((o) => !o)}
@@ -53,20 +55,45 @@ export default function DropDown({
         />
       </button>
 
-      {open && (
-        <div className="absolute left-0 top-full w-full bg-white border-2 overflow-hidden border-[#FF8F8F] rounded-md shadow-md z-50">
-          {options.map((opt) => (
-            <div
-              key={opt.value}
-              className="px-3 py-2  text-sm cursor-pointer hover:bg-[#FFF0F0] hover:rounded-md"
-              onClick={() => handleSelect(opt)}
-              style={{ minWidth: "124px" }}
-            >
-              {opt.label}
-            </div>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -15, scale: 0.95 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 25,
+              mass: 0.8,
+            }}
+            className="absolute left-0 top-full w-full bg-white border-2 overflow-hidden border-[#FF8F8F] rounded-md shadow-lg z-50"
+          >
+            {options.map((opt, index) => (
+              <motion.div
+                key={opt.value}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.08,
+                  ease: [0.4, 0, 0.2, 1],
+                }}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.15 },
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="px-3 py-2 text-sm cursor-pointer hover:bg-[#FFF0F0] rounded-sm"
+                onClick={() => handleSelect(opt)}
+                style={{ minWidth: "124px" }}
+              >
+                {opt.label}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

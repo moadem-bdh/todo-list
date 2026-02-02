@@ -11,6 +11,12 @@ import HomeIcon from "../assets/home.svg";
 import MoademLogo from "../assets/moademLogo.svg";
 
 export default function SideBare({ isOpen = true, onToggle }) {
+  const handleIconClick = () => {
+    if (!isOpen) {
+      onToggle();
+    }
+  };
+
   return (
     <motion.nav
       initial={false}
@@ -56,6 +62,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
               </Link>
               <Link
                 to="/events"
+                onClick={handleIconClick}
                 className="p-2 rounded-xl hover:bg-white/10 transition-colors"
                 title="Events"
               >
@@ -63,6 +70,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
               </Link>
               <Link
                 to="/sticky-wall"
+                onClick={handleIconClick}
                 className="p-2 rounded-xl hover:bg-white/10 transition-colors"
                 title="Sticky Walls"
               >

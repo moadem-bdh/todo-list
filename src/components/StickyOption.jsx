@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import StickyIcon from "../assets/Sticky.svg";
 import Delete from "../assets/delete.svg";
 import Edit from "../assets/Rename.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStickyWalls } from "../Contexts/StickyWallContext";
 import { useToggle } from "../CustomHooks/useToggle";
 import Arrow from "../assets/arrow.svg";
@@ -25,11 +25,35 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
     stickyName: Title,
     notes: [],
   };
-  const [renamedSticky, setRenamedSticky, resetRenamedSticky] = useForm({
+  const [
+    renamedSticky,
+    setRenamedSticky,
+    resetRenamedSticky,
+    baseRenamedSticky,
+  ] = useForm({
     stickyName: safeStickyWall.stickyName,
     id: safeStickyWall.id,
     notes: safeStickyWall.notes,
   });
+
+  useEffect(() => {
+    const handleEditSticky = () => {
+      if (window.__pendingEditStickyId === stickyId) {
+        window.__pendingEditStickyId = null;
+        baseRenamedSticky({
+          stickyName: currentStickyWall.stickyName,
+          id: currentStickyWall.id,
+          notes: currentStickyWall.notes,
+        });
+        setIsError(false);
+        setIsRenam();
+      }
+    };
+
+    window.addEventListener("editSticky", handleEditSticky);
+    return () => window.removeEventListener("editSticky", handleEditSticky);
+  }, [stickyId, currentStickyWall, baseRenamedSticky, setIsRenam]);
+
   if (!currentStickyWall) {
     return null;
   }
@@ -55,12 +79,18 @@ export default function EventOption({ Title = "Sticky Name", stickyId }) {
   const handleEditClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    baseRenamedSticky({
+      stickyName: currentStickyWall.stickyName,
+      id: currentStickyWall.id,
+      notes: currentStickyWall.notes,
+    });
+    setIsError(false);
     setIsRenam();
   };
 
   const handleRenamClick = () => {
     const trimSticky = {
-      ...renamedSticky,
+      ...currentStickyWall,
       stickyName: renamedSticky.stickyName.trim(),
     };
 

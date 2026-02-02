@@ -9,9 +9,13 @@ export default function StickyWall({
   NoteContent = "",
   bgColor = "bg-[#98A7FD]",
   id,
+  rotation = 0,
 }) {
   const { setStickyWalls } = useStickyWalls();
   const { stickyId } = useParams();
+
+  const rotations = [-0.5, 0.3, -0.3, 0.5, -0.4];
+  const rotationDegree = rotations[rotation % rotations.length];
 
   const handleDeleteClick = (noteId) => {
     setStickyWalls((prev) => {
@@ -28,12 +32,17 @@ export default function StickyWall({
 
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, y: 18, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 10, scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 240, damping: 20 }}
-      className={` flex w-full min-h-42 px-5 pt-5 pb-12 flex-col items-center gap-[10px] rounded-1 ${bgColor} shadow-[0_0_6px_3px_rgba(0,0,0,0.08)] `}
+      layout="position"
+      initial={{ opacity: 0, y: 18, scale: 0.98, rotate: rotationDegree }}
+      animate={{ opacity: 1, y: 0, scale: 1, rotate: rotationDegree }}
+      exit={{ opacity: 0, y: 10, scale: 0.98, rotate: rotationDegree }}
+      whileHover={{
+        scale: 1.02,
+        rotate: 0,
+        boxShadow: "8px 8px 20px rgba(0,0,0,0.25)",
+      }}
+      transition={{ duration: 0.2, layout: { duration: 0.3 } }}
+      className={`flex w-full min-h-42 px-5 pt-5 pb-12 flex-col items-center gap-[10px] rounded-1 ${bgColor} shadow-[4px_4px_12px_rgba(0,0,0,0.15)]`}
     >
       <div className=" flex w-full justify-between items-center font-poppins text-2xl font-semibold text-black  ">
         {NoteName}

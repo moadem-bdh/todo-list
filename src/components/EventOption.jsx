@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskIcon from "../assets/task.svg";
 import Delete from "../assets/delete.svg";
 import Edit from "../assets/Rename.svg";
@@ -30,6 +30,25 @@ export default function EventOption({ Title = "Task Name", eventId }) {
     Tasks: safeEvent.Tasks,
   });
   const location = useLocation();
+
+  useEffect(() => {
+    const handleEditEvent = () => {
+      if (window.__pendingEditEventId === eventId) {
+        window.__pendingEditEventId = null;
+        BaseRenamForm({
+          id: currentEvent.id,
+          Name: currentEvent.Name,
+          Tasks: currentEvent.Tasks,
+        });
+        setIsError(false);
+        setRenam();
+      }
+    };
+
+    window.addEventListener("editEvent", handleEditEvent);
+    return () => window.removeEventListener("editEvent", handleEditEvent);
+  }, [eventId, currentEvent, BaseRenamForm, setRenam]);
+
   if (!currentEvent) {
     return null;
   }
@@ -53,10 +72,19 @@ export default function EventOption({ Title = "Task Name", eventId }) {
   const handleEditClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+    BaseRenamForm({
+      id: currentEvent.id,
+      Name: currentEvent.Name,
+      Tasks: currentEvent.Tasks,
+    });
+    setIsError(false);
     setRenam();
   };
   const handleRenamClick = () => {
-    const trimForm = { ...renamForm, Name: renamForm.Name.trim() };
+    const trimForm = {
+      ...currentEvent,
+      Name: renamForm.Name.trim(),
+    };
 
     if (!trimForm.Name) {
       setIsError(true);
