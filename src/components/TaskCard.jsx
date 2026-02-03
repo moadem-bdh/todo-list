@@ -5,7 +5,7 @@ import Right from "../assets/Right.svg";
 import List3 from "../assets/List3.svg";
 import PriorityTeller from "./PriorityTeller";
 import Eye from "../assets/eye.svg";
-import Pin1 from "../assets/Pin1.svg";
+import Pin1 from "../assets/pin1.svg";
 import ViewTaskNotesModal from "./modals/ViewTaskNotesModal";
 import { useState } from "react";
 // eslint-disable-next-line no-unused-vars

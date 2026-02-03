@@ -1,6 +1,6 @@
 import Close from "../../assets/close.svg";
 import List3 from "../../assets/List3.svg";
-import Pin1 from "../../assets/Pin1.svg";
+import Pin1 from "../../assets/pin1.svg";
 import PriorityTeller from "../PriorityTeller";
 import { createPortal } from "react-dom";
 // eslint-disable-next-line no-unused-vars
