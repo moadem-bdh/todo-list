@@ -11,7 +11,7 @@ export default function StickyWallNotes() {
   const currentNotes = stickyWalls.find((sticky) => sticky.id == stickyId);
 
   return (
-    <section className="w-full grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-6 sm:gap-y-8 items-start">
+    <section className="w-full grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-6 sm:gap-y-8 items-start">
       {currentNotes?.notes && currentNotes.notes.length > 0 ? (
         <>
           <AnimatePresence initial={false}>
