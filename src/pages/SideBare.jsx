@@ -43,7 +43,8 @@ export default function SideBare({ isOpen = true, onToggle }) {
       <motion.nav
         initial={isMobile ? { y: "-100%", opacity: 0 } : false}
         animate={{
-          width: isMobile ? "100%" : isOpen ? 300 : 64,
+          width: isMobile ? "100%" : isOpen ? "300px" : "64px",
+          height: "100vh",
           y: isMobile ? (isOpen ? 0 : "-100%") : 0,
           opacity: isMobile ? (isOpen ? 1 : 0) : 1,
         }}
@@ -52,7 +53,8 @@ export default function SideBare({ isOpen = true, onToggle }) {
             ? { type: "spring", stiffness: 600, damping: 50 }
             : { type: "spring", stiffness: 400, damping: 40 }
         }
-        className={`fixed top-0 left-0 h-screen bg-[#0C0E0B] py-[13px] flex-col items-center justify-between flex overflow-hidden z-50 md:z-auto ${
+        style={{ height: "100vh", minHeight: "100vh" }}
+        className={`fixed top-0 left-0 bg-[#0C0E0B] py-[13px] flex-col items-center justify-between flex overflow-hidden z-50 md:z-auto max-w-full ${
           isMobile ? "w-full" : ""
         } ${isMobile ? "overflow-y-auto" : "overflow-hidden"} ${
           !isOpen && isMobile ? "pointer-events-none" : ""

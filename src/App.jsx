@@ -58,12 +58,12 @@ function App() {
           />
 
           <motion.div
-          initial={false}
+            initial={false}
             animate={{
-              marginLeft: isMobile ? 0 : isSidebarOpen ? 300 : 64,
+              marginLeft: isMobile ? 0 : isSidebarOpen ? "300px" : "64px",
             }}
             transition={{ type: "spring", stiffness: 400, damping: 40 }}
-            className="w-full"
+            className="w-full min-w-0 overflow-x-hidden"
           >
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
