@@ -172,18 +172,18 @@ export default function EventOption({
             <div className="flex items-center gap-2 pr-2 md:hidden">
               <button
                 onClick={handleEditClick}
-                className="p-2 rounded-md bg-white/10"
+                className="p-2.5 rounded-md bg-white/10"
               >
-                <img src={Edit} alt="Edite Icon" className="w-5" />
+                <img src={Edit} alt="Edite Icon" className="w-6" />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDeleteClick(e);
                 }}
-                className="p-2 rounded-md bg-white/10"
+                className="p-2.5 rounded-md bg-white/10"
               >
-                <img src={Delete} alt="Delete Icon" className="w-5" />
+                <img src={Delete} alt="Delete Icon" className="w-6" />
               </button>
             </div>
 

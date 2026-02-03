@@ -6,20 +6,34 @@ import StickyFormModal from "./components/modals/StickyFormModal";
 import HomePage from "./pages/HomePage";
 import { EventsProvider } from "./Contexts/EventsContex";
 import { Routes, Route, useLocation } from "react-router";
-import { AnimatePresence } from "framer-motion";
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
 import EventsSection from "./pages/EventsSection";
 import { StickyWallprovider } from "./Contexts/StickyWallContext";
 import MenuIcon from "./assets/menu.svg";
 import CloseIcon from "./assets/close.svg";
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 768px)").matches
+      : false,
+  );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
   const location = useLocation();
 
   useEffect(() => {
     const handleOpenSidebar = () => setIsSidebarOpen(true);
     window.addEventListener("openSidebar", handleOpenSidebar);
     return () => window.removeEventListener("openSidebar", handleOpenSidebar);
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    const handleChange = (e) => setIsMobile(e.matches);
+    setIsMobile(media.matches);
+    media.addEventListener("change", handleChange);
+    return () => media.removeEventListener("change", handleChange);
   }, []);
 
   return (
@@ -43,10 +57,13 @@ function App() {
             onToggle={() => setIsSidebarOpen((prev) => !prev)}
           />
 
-          <div
-            className={`w-full transition-[margin] duration-300 ${
-              isSidebarOpen ? "ml-[300px]" : "ml-[64px]"
-            } max-md:ml-0`}
+          <motion.div
+          initial={false}
+            animate={{
+              marginLeft: isMobile ? 0 : isSidebarOpen ? 300 : 64,
+            }}
+            transition={{ type: "spring", stiffness: 400, damping: 40 }}
+            className="w-full"
           >
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
@@ -74,7 +91,7 @@ function App() {
                 </Route>
               </Routes>
             </AnimatePresence>
-          </div>
+          </motion.div>
         </div>
       </StickyWallprovider>
     </EventsProvider>

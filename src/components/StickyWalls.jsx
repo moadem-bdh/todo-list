@@ -109,10 +109,10 @@ export default function StickyWalls({ onNavigate = () => {} }) {
               />
               <button
                 onClick={handleAddclick}
-                className="hover:bg-[#321b1b] hover:outline-3 hover:outline-[#321b1b] rounded-sm cursor-pointer p-1"
+                className="hover:bg-[#321b1b] hover:outline-3 hover:outline-[#321b1b] rounded-sm cursor-pointer p-1.5 md:p-1"
               >
                 <img
-                  className="rotate-90 w-5 md:w-4.5"
+                  className="rotate-90 w-8 md:w-4.5"
                   src={Arrow}
                   alt="Add Icon"
                 />

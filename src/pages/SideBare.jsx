@@ -12,7 +12,11 @@ import HomeIcon from "../assets/home.svg";
 import MoademLogo from "../assets/moademLogo.svg";
 
 export default function SideBare({ isOpen = true, onToggle }) {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 768px)").matches
+      : false,
+  );
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 768px)");
@@ -37,7 +41,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
         />
       )}
       <motion.nav
-        initial={false}
+        initial={isMobile ? { y: "-100%", opacity: 0 } : false}
         animate={{
           width: isMobile ? "100%" : isOpen ? 300 : 64,
           y: isMobile ? (isOpen ? 0 : "-100%") : 0,

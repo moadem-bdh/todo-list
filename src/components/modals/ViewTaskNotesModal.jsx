@@ -49,7 +49,7 @@ export default function ViewTaskNotesModal({
             animate={{ y: 0, scale: 1, opacity: 1 }}
             exit={{ y: 24, scale: 0.98, opacity: 0 }}
             transition={{ type: "spring", stiffness: 240, damping: 20 }}
-            className="bg-white rounded-[20px] w-full sm:w-[85%] md:w-2/5 max-w-[600px] mx-auto p-4 sm:p-6 shadow-lg max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-[20px] w-full sm:w-[85%] md:w-2/5 md:min-w-[500px] max-w-[600px] mx-auto p-4 sm:p-6 shadow-lg max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-4 sm:mb-6">

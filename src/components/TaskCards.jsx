@@ -32,7 +32,7 @@ export default function TaskCards({ priority }) {
   }
 
   return (
-    <section className="w-full grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(310px,1fr))] gap-x-4 gap-y-6 sm:gap-y-8 items-start">
+    <section className="w-full grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-x-4 gap-y-6 sm:gap-y-8 items-start">
       <AnimatePresence initial={false}>
         {currentEvent.Tasks.map((task) => {
           if (priority == "All Tasks") {
