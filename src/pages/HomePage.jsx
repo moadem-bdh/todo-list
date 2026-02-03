@@ -26,7 +26,7 @@ export default function HomePage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35 }}
-      className=" h-screen  min-h-max bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 py-16 py-20  relative overflow-visible md:overflow-hidden"
+      className=" h-screen  min-h-max bg-gradient-to-br from-[#F6F8FA] to-[#E8EAED] flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16  py-20  relative overflow-visible md:overflow-hidden"
     >
       {/* Content */}
       <div className="z-10 w-full text-center md:text-left md:flex-1 flex flex-col items-center md:items-start gap-6 md:gap-8 md:mb-0 justify-center md:justify-start">
