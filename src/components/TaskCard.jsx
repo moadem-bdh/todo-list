@@ -4,7 +4,7 @@ import Rename from "../assets/Rename.svg";
 import Right from "../assets/Right.svg";
 import List3 from "../assets/List3.svg";
 import PriorityTeller from "./PriorityTeller";
-import Eye from "../assets/Eye.svg";
+import Eye from "../assets/eye.svg";
 import Pin1 from "../assets/Pin1.svg";
 import ViewTaskNotesModal from "./modals/ViewTaskNotesModal";
 import { useState } from "react";
