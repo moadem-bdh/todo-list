@@ -172,7 +172,7 @@ export default function EventOption({
             <div className="flex items-center gap-2 pr-2 md:hidden">
               <button
                 onClick={handleEditClick}
-                className="p-2.5 rounded-md bg-white/10"
+                className="p-2.5 rounded-md bg-white/10 cursor-pointer"
               >
                 <img src={Edit} alt="Edite Icon" className="w-6" />
               </button>
@@ -181,7 +181,7 @@ export default function EventOption({
                   e.stopPropagation();
                   handleDeleteClick(e);
                 }}
-                className="p-2.5 rounded-md bg-white/10"
+                className="p-2.5 rounded-md bg-white/10 cursor-pointer"
               >
                 <img src={Delete} alt="Delete Icon" className="w-6" />
               </button>
@@ -191,7 +191,7 @@ export default function EventOption({
               <div className="hidden md:flex items-center gap-1 pr-1">
                 <button
                   onClick={handleEditClick}
-                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30"
+                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30 cursor-pointer"
                 >
                   <img src={Edit} alt="Edite Icon" className="w-4.5" />
                 </button>
@@ -200,7 +200,7 @@ export default function EventOption({
                     e.stopPropagation();
                     handleDeleteClick(e);
                   }}
-                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30"
+                  className="p-1 rounded-sm hover:bg-[#5b2f2f] opacity-30 cursor-pointer"
                 >
                   <img src={Delete} alt="Delete Icon" className="w-4.5" />
                 </button>

@@ -41,7 +41,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
         />
       )}
       <motion.nav
-        initial={isMobile ? { y: "-100%", opacity: 0 } : false}
+        initial={false}
         animate={{
           width: isMobile ? "100%" : isOpen ? "300px" : "64px",
           height: "100vh",
@@ -54,17 +54,21 @@ export default function SideBare({ isOpen = true, onToggle }) {
             : { type: "spring", stiffness: 400, damping: 40 }
         }
         style={{ height: "100vh", minHeight: "100vh" }}
-        className={`fixed top-0 left-0 bg-[#0C0E0B] py-[13px] flex-col items-center justify-between flex overflow-hidden z-50 md:z-auto max-w-full ${
+        className={`fixed top-0 left-0 overflow-x-hidden bg-[#0C0E0B] overflow-y-auto py-[13px] flex-col items-center justify-between flex z-50 md:z-auto max-w-full scrollbar-thin  scrollbar-thumb-[#d7303b41] scrollbar-track-transparent ${
           isMobile ? "w-full" : ""
-        } ${isMobile ? "overflow-y-auto" : "overflow-hidden"} ${
-          !isOpen && isMobile ? "pointer-events-none" : ""
-        }`}
+        } ${!isOpen && isMobile ? "pointer-events-none" : ""}`}
       >
         <div className=" flex flex-col items-center gap-[15px] w-full ">
           <div
             className={`${isOpen ? "gap-5" : ""} flex flex-col w-full justify-between items-center `}
           >
-            <MenuTitele isOpen={isOpen} onToggle={onToggle} />
+            <MenuTitele
+              isOpen={isOpen}
+              onToggle={onToggle}
+              onHomeClick={() => {
+                if (isOpen) onToggle();
+              }}
+            />
             <hr className=" w-full border-1 border-white/60 rounded " />
           </div>
           <AnimatePresence mode="wait">
@@ -75,7 +79,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.2 }}
-                className="w-full"
+                className="w-full "
               >
                 <Link
                   to="/"
@@ -98,7 +102,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-col items-center gap-6 pt-2"
+                className="flex flex-col items-center min-h-max gap-6 pt-2"
               >
                 <Link
                   to="/"
@@ -151,7 +155,7 @@ export default function SideBare({ isOpen = true, onToggle }) {
               exit={{ opacity: 0 }}
               className="pb-3"
             >
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <div className="w-10 h-10 mt-16  rounded-full bg-white/10 flex items-center justify-center">
                 <img src={MoademLogo} alt="Moadem Logo" className="w-6 h-6" />
               </div>
             </motion.div>

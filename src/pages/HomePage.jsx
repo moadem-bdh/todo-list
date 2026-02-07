@@ -4,9 +4,9 @@ import Avatar from "../assets/Avatar.png";
 import EventIcon from "../assets/event.svg";
 import StickyHomeIcon from "../assets/stickyHomeRed.svg";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
-export default function HomePage() {
+export default function HomePage({ isSidebarOpen = false }) {
   const handleEventsClick = () => {
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     if (!isMobile) {
@@ -98,18 +98,24 @@ export default function HomePage() {
       </div>
 
       {/* Avatar - Desktop only, fixed at bottom right */}
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0, y: 50 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="absolute -right-8 lg:-right-20 xl:-right-14 bottom-0 hidden lg:block"
-      >
-        <img
-          src={Avatar}
-          alt="Welcome Avatar"
-          className="h-[630px] xl:h-[660px] transition-all w-auto object-contain"
-        />
-      </motion.div>
+      <AnimatePresence>
+        {!isSidebarOpen && (
+          <motion.div
+            key="hero-avatar"
+            initial={{ scale: 0.9, opacity: 0, y: 40 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 40 }}
+            transition={{ duration: 0.35 }}
+            className="absolute -right-8 lg:-right-20 xl:-right-14 bottom-0 hidden lg:block"
+          >
+            <img
+              src={Avatar}
+              alt="Welcome Avatar"
+              className="max-h-[98vh] min-h-[540px] transition-all w-auto object-contain"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

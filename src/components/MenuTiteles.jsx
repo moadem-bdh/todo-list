@@ -6,7 +6,10 @@ export default function MenuTiteles({ titele = "events", onClick }) {
       <p className="text-[#D7303A] font-poppins font-semibold text-lg md:text-base">
         {titele.toLocaleUpperCase()}
       </p>
-      <button onClick={onClick} className="rounded-md hover:bg-[#341c1e] p-1.5">
+      <button
+        onClick={onClick}
+        className="rounded-md hover:bg-[#341c1e] p-1.5 cursor-pointer"
+      >
         <img src={AddIcon} alt="Add Icon" className="w-6 md:w-5" />
       </button>
     </div>

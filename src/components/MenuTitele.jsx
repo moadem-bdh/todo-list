@@ -4,7 +4,11 @@ import { Link } from "react-router";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
-export default function MenuTitele({ isOpen = true, onToggle = () => {} }) {
+export default function MenuTitele({
+  isOpen = true,
+  onToggle = () => {},
+  onHomeClick = () => {},
+}) {
   return (
     <div
       className={`flex w-full items-center ${isOpen ? "justify-between px-4" : "justify-center px-0 "}`}
@@ -12,6 +16,7 @@ export default function MenuTitele({ isOpen = true, onToggle = () => {} }) {
       {isOpen && (
         <Link
           to="/"
+          onClick={onHomeClick}
           className="text-white font-poppins text-[32px] font-bold hover:text-[#d7303acc] transition-colors duration-200"
         >
           <motion.span
@@ -26,7 +31,7 @@ export default function MenuTitele({ isOpen = true, onToggle = () => {} }) {
       )}
       <button
         onClick={onToggle}
-        className={`rounded-md hover:bg-white/10 transition-colors flex items-center justify-center p-0.5 ${isOpen ? "" : "mb-2"}`}
+        className={`rounded-md hover:bg-white/10 transition-colors flex items-center justify-center p-0.5 cursor-pointer ${isOpen ? "" : "mb-2"}`}
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
         <img

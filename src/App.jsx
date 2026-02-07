@@ -19,7 +19,7 @@ function App() {
       ? window.matchMedia("(max-width: 768px)").matches
       : false,
   );
-  const [isSidebarOpen, setIsSidebarOpen] = useState(!isMobile);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -67,7 +67,10 @@ function App() {
           >
             <AnimatePresence mode="wait">
               <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/"
+                  element={<HomePage isSidebarOpen={isSidebarOpen} />}
+                />
 
                 <Route path="/events" element={<EventsSection />} />
                 <Route path="/events/:eventId" element={<EventsSection />}>
